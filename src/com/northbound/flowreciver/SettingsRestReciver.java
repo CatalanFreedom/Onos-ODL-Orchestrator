@@ -19,8 +19,9 @@ public class SettingsRestReciver {
             if (!baseURL.contains("http")) {
                 baseURL = "http://" + baseURL;
             }
-            baseURL = baseURL + "/controller/nb/v2/flowprogrammer/default/node/OF/00:00:00:00:00:00:00:01/";
-
+//            baseURL = baseURL + "/restconf/operational/opendaylight-inventory:nodes/";
+            baseURL = baseURL + "/restconf/config/opendaylight-inventory:nodes/node/openflow:1/flow-node-inventory:table/0/flow/20";
+            
             // Create URL = base URL + container
             URL url = new URL(baseURL);
 

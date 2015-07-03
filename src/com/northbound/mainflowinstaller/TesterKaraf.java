@@ -6,7 +6,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import com.northbound.flowsender.RestInterfaceSender;
 
-public class TesterFirst {
+public class TesterKaraf {
 
 	public static void main(String[] args) throws JSONException {
 		
@@ -14,37 +14,30 @@ public class TesterFirst {
 // {"flow": [{"id": "1","instructions": {"instruction": [{"order": 0,"apply-actions": {"action":[{"order": 0,"output-action": {"output-node-connector": "2"}}]}}]},     "flow-name": "Edu","match": {"in-port": "1"},"strict": false,"table_id": 0,"priority": 999}]}
 // {"flow": [{"id": "1","instructions": {"instruction": [{"order": 0,"apply-actions": {"action":[{"order": 0,"output-action": {"output-node-connector": "2"}}]}}]},"table_id":0,"priority":10,"flow-name":"S1-S2","match":{"ipv4-destination":"10.0.0.2\/32","ipv4-source":"10.0.0.1\/32","ethernet-match":{"ethernet-type":{"type":2048}}}}]}		
 // {"flow": [{"id": "5","instructions": {"instruction": [{"order": 0,"apply-actions": {"action":[{"order": 0,"output-action": {"output-node-connector": "2"}}]}}]},"table_id":0,"priority":99,"flow-name":"Edu",  "match":{"ipv4-destination":"10.0.0.2\/32","ipv4-source":"10.0.0.1\/32","ethernet-match":{"ethernet-type":{"type":2048}}}}]}
-// {"flow": [{"id":"20","instructions": {"instruction": [{"order": 0,"apply-actions": {"action":[{"order": 1,"output-action": {"output-node-connector":"6"}},{"order":2,"output-action":{"max-length":65535,"output-node-connector":"7"}},{"order":0,"output-action":{"max-length":65535,"output-node-connector":"5"}}]}}]},"hard-timeout":0,"flow-name":"ARP","idle-timeout":0,"match":{"ethernet-match":{"ethernet-type":{"type":2054}}},"table_id":0,"priority":3}]}
 		// Sample post data.
 		
 // }}]}}]},     "flow-name": "Edu", "match": {"in-port": "1"},"strict": false,"table_id": 0,"priority": 999}]}
 // }}]}}]},     "flow-name":"S1-S2","match": {"ipv4-destination":"10.0.0.2\/32","ipv4-source":"10.0.0.1\/32","ethernet-match":{"ethernet-type":{"type":2048}}}}]}		
 		
-		JSONObject outputAction1 = new JSONObject();
-		outputAction1.put("output-node-connector", "5");
+		String actionToDo = "2";
+		String numID = "5";
+		int priority = 555;
+		String name = "H1-H2";
+		int etherType = 2048;
+		String nwDst = "10.0.0.2/32";
+		String nwSrc = "10.0.0.1/32";
+		String switchToInstall = "openflow:1";
+		String table = "0";
+
 		
-		JSONObject outputAction2 = new JSONObject();
-		outputAction2.put("output-node-connector", "6");
 		
-		JSONObject outputAction3 = new JSONObject();
-		outputAction3.put("output-node-connector", "7");
-		
-		JSONObject insideAction1 = new JSONObject();
-		insideAction1.put("order", 0);
-		insideAction1.put("output-action", outputAction1);
-		
-		JSONObject insideAction2 = new JSONObject();
-		insideAction2.put("order", 1);
-		insideAction2.put("output-action", outputAction2);
-		
-		JSONObject insideAction3 = new JSONObject();
-		insideAction3.put("order", 2);
-		insideAction3.put("output-action", outputAction3);
-		
+		JSONObject outputAction = new JSONObject();
+		outputAction.put("output-node-connector", actionToDo);
 		JSONArray action = new JSONArray();
-		action.put(insideAction1);
-		action.put(insideAction2);
-		action.put(insideAction3);
+		JSONObject insideAction = new JSONObject();
+		insideAction.put("order", 0);
+		insideAction.put("output-action", outputAction);
+		action.put(insideAction);
 		
 		JSONObject applyActions = new JSONObject();
 		applyActions.put("action", action);
@@ -60,28 +53,28 @@ public class TesterFirst {
 		Instruction.put("instruction",insideInstructionArray);
 		
 		JSONObject flowInside = new JSONObject();
-		flowInside.put("id", "5");
+		flowInside.put("id", numID);
 		flowInside.put("instructions", Instruction);
-		flowInside.put("table_id", 0);
-		flowInside.put("priority", 10);
-		flowInside.put("flow-name", "Marieta");
+		flowInside.put("table_id", table);
+		flowInside.put("priority", priority);
+		flowInside.put("flow-name", name);
 		
 		
 		
 		JSONObject ethernetType = new JSONObject();
-		ethernetType.put("type", 2048);
+		ethernetType.put("type", etherType);
 				
 		JSONObject ethernetMatch = new JSONObject();
 		ethernetMatch.put("ethernet-type", ethernetType);
 		
 		JSONObject match = new JSONObject();
-		match.put("ipv4-destination", "10.0.0.2/32");
-		match.put("ipv4-source", "10.0.0.1/32");
+		match.put("ipv4-destination", nwDst);
+		match.put("ipv4-source", nwSrc);
 		match.put("ethernet-match", ethernetMatch);
 		flowInside.put("match", match);
 		
 		flowInside.put("table_id", 0);
-		flowInside.put("priority", 999);
+		flowInside.put("priority", priority);
 		
 		JSONArray flowInsideArray = new JSONArray();
 		flowInsideArray.put(flowInside);
@@ -90,13 +83,10 @@ public class TesterFirst {
 		flow.put("flow", flowInsideArray);
 		
 		
-		String switchToInstall = "openflow:1";
-		String table = "0";
-		String flowNum = "5";
 		
 		
 		// Actual flow install
-		RestInterfaceSender.installFlow(switchToInstall, table, flowNum, flow);
+		RestInterfaceSender.installFlow(switchToInstall, table, numID, flow);
 
 	}
 

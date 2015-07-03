@@ -87,15 +87,15 @@ public class MainFlowInstallerNB {
 				
 					if (flowInArray[j] == null){		// If the flow have not been installed before, we installed it now.
 						MakeNewFlowDPI newInstall = new MakeNewFlowDPI();
-						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS1_go, "00:00:00:00:00:00:00:01");
-						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS2_go, "00:00:00:00:00:00:00:02");
-						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS3_go, "00:00:00:00:00:00:00:03");
+//						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS1_go, "00:00:00:00:00:00:00:01");
+//						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS2_go, "00:00:00:00:00:00:00:02");
+//						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS3_go, "00:00:00:00:00:00:00:03");
 						
 						// Flows of the come back journey.
 						if(actionToDoS1_return != null){
-							newInstall.flowInstallDPI(name_return, nwSrc_return, nwDst_return, actionToDoS1_return, "00:00:00:00:00:00:00:01");
-							newInstall.flowInstallDPI(name_return, nwSrc_return, nwDst_return, actionToDoS2_return, "00:00:00:00:00:00:00:02");
-							newInstall.flowInstallDPI(name_return, nwSrc_return, nwDst_return, actionToDoS3_return, "00:00:00:00:00:00:00:03");
+//							newInstall.flowInstallDPI(name_return, nwSrc_return, nwDst_return, actionToDoS1_return, "00:00:00:00:00:00:00:01");
+//							newInstall.flowInstallDPI(name_return, nwSrc_return, nwDst_return, actionToDoS2_return, "00:00:00:00:00:00:00:02");
+//							newInstall.flowInstallDPI(name_return, nwSrc_return, nwDst_return, actionToDoS3_return, "00:00:00:00:00:00:00:03");
 						}
 						
 						// Filling the Comparing array if we are not using the REST Receiving application.

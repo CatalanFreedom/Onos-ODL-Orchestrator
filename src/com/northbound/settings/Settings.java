@@ -5,10 +5,10 @@ public class Settings {
 	// REST Parameters to log.
 	public static final String USERNAME = "admin";
 	public static final String PASSWORD = "admin";
-	public static final String URL = "http://192.168.56.101:8080";
+	public static final String URL = "http://localhost:8181";
 	
 	// Socket to connect with the DPI.
-	public static final int SOCKET_PORT = 4000;
+	public static final int SOCKET_PORT = 4002;
 
 	// Option to Make our own Array to check the flows already installed, or check them 
 	// asking the controller the already installed flows.
