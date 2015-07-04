@@ -16,7 +16,7 @@ public class RestInterfaceRecieverPrima {
 	 */
 	public static void main(String[] args) throws JSONException {
 		SettingsRestReciver nodes = new SettingsRestReciver();
-		JSONObject myFlows = nodes.getNodes(Settings.USERNAME, Settings.PASSWORD, "http://localhost:8181");
+		JSONObject myFlows = nodes.getNodes(Settings.USERNAME, Settings.PASSWORD, "http://192.168.56.101:8181");
 //		System.out.println(myFlows);
 		
 		System.out.println(myFlows);

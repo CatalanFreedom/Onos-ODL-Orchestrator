@@ -8,8 +8,8 @@ import com.northbound.flowsender.RestInterfaceSender;
 
 public class MakeNewFlowDPI {
 	
-	public void flowInstallDPI(String actionToDo1, String actionToDo2, String actionToDo3,  String numID, int priority, String name, int etherType, String nwSrc, String nwDst, 
-			String nodeToInstall) throws JSONException{
+	public void flowInstallDPI(String actionToDo1, String actionToDo2, String actionToDo3,  int priority, String name, int etherType, String inPort, 
+			String nwSrc, String nwDst, String nodeToInstall) throws JSONException{
 		
 		
 				
@@ -66,24 +66,29 @@ public class MakeNewFlowDPI {
 				Instruction.put("instruction",insideInstructionArray);
 				
 				JSONObject flowInside = new JSONObject();
-				flowInside.put("id", numID);
+				flowInside.put("id", name);
 				flowInside.put("instructions", Instruction);
 				flowInside.put("table_id", table);
 				flowInside.put("priority", priority);
 				flowInside.put("flow-name", name);
 				
-				
-				
-				JSONObject ethernetType = new JSONObject();
-				ethernetType.put("type", etherType);
-						
 				JSONObject ethernetMatch = new JSONObject();
-				ethernetMatch.put("ethernet-type", ethernetType);
+				if(etherType!=-1){		// ARP Packet FLOW
+					JSONObject ethernetType = new JSONObject();
+					ethernetType.put("type", etherType);
+					ethernetMatch.put("ethernet-type", ethernetType);
+				}
 				
 				JSONObject match = new JSONObject();
-				match.put("ipv4-destination", nwDst);
-				match.put("ipv4-source", nwSrc);
-				match.put("ethernet-match", ethernetMatch);
+				if(nwSrc!="-1"){
+					match.put("ipv4-destination", nwDst);
+					match.put("ipv4-source", nwSrc);
+				}else{
+					match.put("in-port", inPort);
+				}
+				if(etherType!=-1){
+					match.put("ethernet-match", ethernetMatch);
+				}
 				flowInside.put("match", match);
 				
 				flowInside.put("table_id", 0);
@@ -95,11 +100,8 @@ public class MakeNewFlowDPI {
 				JSONObject flow = new JSONObject();
 				flow.put("flow", flowInsideArray);
 				
-				
-				
-				
 				// Actual flow install
-				RestInterfaceSender.installFlow(nodeToInstall, table, numID, flow);
+				RestInterfaceSender.installFlow(nodeToInstall, table, name, flow);
 		
 		
 		

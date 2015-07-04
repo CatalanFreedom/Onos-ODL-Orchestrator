@@ -82,11 +82,17 @@ public class MainFlowInstallerNB {
 				}
 				
 				// Installing the new flow.
+				int etherType = 2048;
+				int priority = 999;
+				String inPort = "-1";
 				int j=0;
 				while (j < flowInArray.length){
 				
 					if (flowInArray[j] == null){		// If the flow have not been installed before, we installed it now.
 						MakeNewFlowDPI newInstall = new MakeNewFlowDPI();
+						newInstall.flowInstallDPI(actionToDoS1_go, actionToDoS1_go, actionToDoS1_go, priority, name_go, etherType, inPort, nwSrc_go, nwDst_go, "openflow:1");
+						newInstall.flowInstallDPI(actionToDoS2_go, actionToDoS2_go, actionToDoS2_go, priority, name_go, etherType, inPort, nwSrc_go, nwDst_go, "openflow:2");
+						newInstall.flowInstallDPI(actionToDoS3_go, actionToDoS3_go, actionToDoS3_go, priority, name_go, etherType, inPort, nwSrc_go, nwDst_go, "openflow:3");
 //						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS1_go, "00:00:00:00:00:00:00:01");
 //						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS2_go, "00:00:00:00:00:00:00:02");
 //						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS3_go, "00:00:00:00:00:00:00:03");

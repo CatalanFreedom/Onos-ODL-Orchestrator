@@ -20,7 +20,7 @@ public class SettingsRestReciver {
                 baseURL = "http://" + baseURL;
             }
 //            baseURL = baseURL + "/restconf/operational/opendaylight-inventory:nodes/";
-            baseURL = baseURL + "/restconf/config/opendaylight-inventory:nodes/node/openflow:1/flow-node-inventory:table/0/flow/20";
+            baseURL = baseURL + "/restconf/config/opendaylight-inventory:nodes/node/openflow:1/flow-node-inventory:table/0/flow/S1:H1-H2:InicialFlowInsert";
             
             // Create URL = base URL + container
             URL url = new URL(baseURL);
