@@ -46,13 +46,13 @@ public class MainFlowInstallerNB {
 			if (OUTPUT_PORTS[0] != -1){			// If it is not a ICMPV6 or MDNS packet, that do not have @IPs and @IPd.
 				if (OUTPUT_PORTS[0] != -2){		// If the packet comes from a known source.
 					
-					actionToDoS1_go = "OUTPUT="+Integer.toString(OUTPUT_PORTS[0]);
-					actionToDoS2_go = "OUTPUT="+Integer.toString(OUTPUT_PORTS[1]);
-					actionToDoS3_go = "OUTPUT="+Integer.toString(OUTPUT_PORTS[2]);
+					actionToDoS1_go = Integer.toString(OUTPUT_PORTS[0]);
+					actionToDoS2_go = Integer.toString(OUTPUT_PORTS[1]);
+					actionToDoS3_go = Integer.toString(OUTPUT_PORTS[2]);
 					
-					actionToDoS1_return = "OUTPUT="+Integer.toString(OUTPUT_PORTS[3]);
-					actionToDoS2_return = "OUTPUT="+Integer.toString(OUTPUT_PORTS[4]);
-					actionToDoS3_return = "OUTPUT="+Integer.toString(OUTPUT_PORTS[5]);
+					actionToDoS1_return = Integer.toString(OUTPUT_PORTS[3]);
+					actionToDoS2_return = Integer.toString(OUTPUT_PORTS[4]);
+					actionToDoS3_return = Integer.toString(OUTPUT_PORTS[5]);
 					
 				} else {					// If the packet comes from an unknown source.
 					actionToDoS1_go = "DROP";
@@ -85,23 +85,23 @@ public class MainFlowInstallerNB {
 				int etherType = 2048;
 				int priority = 999;
 				String inPort = "-1";
+				String portNotUsed = "-1";
+				String portDPIListening = "5";
 				int j=0;
 				while (j < flowInArray.length){
 				
 					if (flowInArray[j] == null){		// If the flow have not been installed before, we installed it now.
 						MakeNewFlowDPI newInstall = new MakeNewFlowDPI();
-						newInstall.flowInstallDPI(actionToDoS1_go, actionToDoS1_go, actionToDoS1_go, priority, name_go, etherType, inPort, nwSrc_go, nwDst_go, "openflow:1");
-						newInstall.flowInstallDPI(actionToDoS2_go, actionToDoS2_go, actionToDoS2_go, priority, name_go, etherType, inPort, nwSrc_go, nwDst_go, "openflow:2");
-						newInstall.flowInstallDPI(actionToDoS3_go, actionToDoS3_go, actionToDoS3_go, priority, name_go, etherType, inPort, nwSrc_go, nwDst_go, "openflow:3");
-//						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS1_go, "00:00:00:00:00:00:00:01");
-//						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS2_go, "00:00:00:00:00:00:00:02");
-//						newInstall.flowInstallDPI(name_go, nwSrc_go, nwDst_go, actionToDoS3_go, "00:00:00:00:00:00:00:03");
+						newInstall.flowInstallDPI(actionToDoS1_go, portDPIListening, portNotUsed, priority, name_go, etherType, inPort, nwSrc_go, nwDst_go, Settings.SWITCH_1);
+						newInstall.flowInstallDPI(actionToDoS2_go, portNotUsed, portNotUsed, priority, name_go, etherType, inPort, nwSrc_go, nwDst_go, Settings.SWITCH_2);
+						newInstall.flowInstallDPI(actionToDoS3_go, portNotUsed, portNotUsed, priority, name_go, etherType, inPort, nwSrc_go, nwDst_go, Settings.SWITCH_3);
 						
 						// Flows of the come back journey.
 						if(actionToDoS1_return != null){
-//							newInstall.flowInstallDPI(name_return, nwSrc_return, nwDst_return, actionToDoS1_return, "00:00:00:00:00:00:00:01");
-//							newInstall.flowInstallDPI(name_return, nwSrc_return, nwDst_return, actionToDoS2_return, "00:00:00:00:00:00:00:02");
-//							newInstall.flowInstallDPI(name_return, nwSrc_return, nwDst_return, actionToDoS3_return, "00:00:00:00:00:00:00:03");
+							newInstall.flowInstallDPI(actionToDoS1_return, portNotUsed, portNotUsed, priority, name_return, etherType, inPort, nwSrc_return, nwDst_return, Settings.SWITCH_1);
+							newInstall.flowInstallDPI(actionToDoS2_return, portNotUsed, portNotUsed, priority, name_return, etherType, inPort, nwSrc_return, nwDst_return, Settings.SWITCH_2);
+							newInstall.flowInstallDPI(actionToDoS3_return, portNotUsed, portNotUsed, priority, name_return, etherType, inPort, nwSrc_return, nwDst_return, Settings.SWITCH_3);
+
 						}
 						
 						// Filling the Comparing array if we are not using the REST Receiving application.

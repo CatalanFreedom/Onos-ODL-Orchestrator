@@ -11,24 +11,18 @@ import com.northbound.settings.Settings;
 
 public class RestInterfaceSender {
 
-	private static String FLOW_PROGRAMMER_REST_API = "/restconf/config/opendaylight-inventory:nodes/node/";
-//	private static String FLOW_PROGRAMMER_REST_API = "/controller/nb/v2/flowprogrammer/default/node/OF/";
+	private static String FLOW_PROGRAMMER_REST_API = Settings.FLOW_PROGRAMMER_REST_API;
 	
 	// HTTP statuses for checking the call output
 	private static final int ACTUALIZED = 200;
 	private static final int NO_CONTENT = 204;
 	private static final int CREATED = 201;
 
-	public static boolean installFlow(String switchToInstall, String table,
-			String flowNum, JSONObject flow) {
+	public static boolean installFlow(String baseURL, JSONObject flow) {
 
 		HttpURLConnection connection = null;
 		int callStatus = 0;
 
-		// Creating the actual URL to call
-		String baseURL = Settings.URL + FLOW_PROGRAMMER_REST_API + switchToInstall + "/table/" + table
-				+ "/flow/" + flowNum;
-//				+ "/table/0/flow/1";
 
 		try {
 
@@ -59,7 +53,6 @@ public class RestInterfaceSender {
 			
 			os.write(flowToInstall.getBytes());
 				
-//			os.write("{\"flow\": [{\"id\": \"1\",\"instructions\": {\"instruction\": [{\"order\": 0,\"apply-actions\": {\"action\": [{\"order\": 0,\"output-action\": {\"output-node-connector\": \"2\"}}]}}]},\"flow-name\": \"Edu\",\"match\": {\"in-port\": \"1\"},\"strict\": false,\"table_id\": 0,\"priority\": 999}]}]}]}}".getBytes());
 			os.close();
 
 			// Getting the response code

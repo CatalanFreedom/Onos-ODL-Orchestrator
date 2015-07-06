@@ -5,6 +5,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.northbound.flowsender.RestInterfaceSender;
+import com.northbound.settings.Settings;
 
 public class TesterFirstKarafOrdenat {
 
@@ -20,11 +21,11 @@ public class TesterFirstKarafOrdenat {
 // }}]}}]},     "flow-name": "Edu", "match": {"in-port": "1"},"strict": false,"table_id": 0,"priority": 999}]}
 // }}]}}]},     "flow-name":"S1-S2","match": {"ipv4-destination":"10.0.0.2\/32","ipv4-source":"10.0.0.1\/32","ethernet-match":{"ethernet-type":{"type":2048}}}}]}		
 		
-		String idName = "S1:H1-H3:InicialFlowInsert";
+		String name = "S1:H1-H3:InicialFlowInsert";
 		String nwSrc = "10.0.0.1/32";
 		String nwDst = "10.0.0.3/32";
 		int priority = 601;
-		String switchToInstall = "openflow:1";
+		String nodeToInstall = "openflow:1";
 		String table = "0";
 		
 		JSONObject outputAction1 = new JSONObject();
@@ -67,11 +68,11 @@ public class TesterFirstKarafOrdenat {
 		Instruction.put("instruction",insideInstructionArray);
 		
 		JSONObject flowInside = new JSONObject();
-		flowInside.put("id", idName);
+		flowInside.put("id", name);
 		flowInside.put("instructions", Instruction);
 		flowInside.put("table_id", 0);
 		flowInside.put("priority", 10);
-		flowInside.put("flow-name", idName);
+		flowInside.put("flow-name", name);
 		
 		
 		
@@ -97,11 +98,14 @@ public class TesterFirstKarafOrdenat {
 		flow.put("flow", flowInsideArray);
 		
 		
-
-		
-		
-		// Actual flow install
-		RestInterfaceSender.installFlow(switchToInstall, table, idName, flow);
+		// Setting the URL where to install the flow to call it
+					String FLOW_PROGRAMMER_REST_API = Settings.FLOW_PROGRAMMER_REST_API;
+					String baseURL = Settings.URL + FLOW_PROGRAMMER_REST_API + nodeToInstall + "/table/" + table
+							+ "/flow/" + name;
+					
+					
+					// Actual flow install
+					RestInterfaceSender.installFlow(baseURL, flow);
 
 	}
 

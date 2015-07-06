@@ -5,6 +5,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.northbound.flowsender.RestInterfaceSender;
+import com.northbound.settings.Settings;
 
 public class TesterFirst {
 
@@ -24,9 +25,9 @@ public class TesterFirst {
 		
 		// IP FLOW
 		
-		String switchToInstall = "openflow:1";
+		String nodeToInstall = "openflow:1";
 		String table = "0";
-		String flowNum = "1";
+		String name = "1";
 		int etherType = 2048;
 
 		
@@ -70,11 +71,11 @@ public class TesterFirst {
 		Instruction.put("instruction",insideInstructionArray);
 		
 		JSONObject flowInside = new JSONObject();
-		flowInside.put("id", flowNum);
+		flowInside.put("id", name);
 		flowInside.put("instructions", Instruction);
 		flowInside.put("table_id", 0);
 		flowInside.put("priority", 501);
-		flowInside.put("flow-name", flowNum);
+		flowInside.put("flow-name", name);
 		
 		JSONObject ethernetMatch = new JSONObject();
 		if(etherType!=-1){		// ARP Packet FLOW
@@ -105,9 +106,16 @@ public class TesterFirst {
 		JSONObject flow = new JSONObject();
 		flow.put("flow", flowInsideArray);
 		
+	
 		
-		// Actual flow install
-		RestInterfaceSender.installFlow(switchToInstall, table, flowNum, flow);
+		// Setting the URL where to install the flow to call it
+					String FLOW_PROGRAMMER_REST_API = Settings.FLOW_PROGRAMMER_REST_API;
+					String baseURL = Settings.URL + FLOW_PROGRAMMER_REST_API + nodeToInstall + "/table/" + table
+							+ "/flow/" + name;
+					
+					
+					// Actual flow install
+					RestInterfaceSender.installFlow(baseURL, flow);
 
 /*		
 		
