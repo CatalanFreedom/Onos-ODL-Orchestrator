@@ -12,8 +12,8 @@ public class Settings {
 	
 	
 	// REST Parameters to log.
-		public static final String USERNAME = "admin";
-		public static final String PASSWORD = "admin";
+		public static final String USERNAME = "onos";
+		public static final String PASSWORD = "rocks";
 		public static final String URL = choseURL(RELEASE);
 	
 	// IP address where the DPI is listening.
@@ -35,7 +35,7 @@ public class Settings {
 	// Parameters for HELIUM & LITHIUM Release
 	
 		// URL to install the flows
-			public static final String FLOW_PROGRAMMER_REST_API = "/restconf/config/opendaylight-inventory:nodes/node/";
+			public static final String FLOW_PROGRAMMER_REST_API = "/onos/v1/flows";
 		// IP addresses of the HOSTs.
 			public static final String IP_HOST_1 = "10.0.0.1/32";
 			public static final String IP_HOST_2 = "10.0.0.2/32";
@@ -43,9 +43,9 @@ public class Settings {
 			public static final String IP_HOST_4 = "10.0.0.4/32";
 		
 		// Node identifiers.
-			public static final String SWITCH_1 = "openflow:1";
-			public static final String SWITCH_2 = "openflow:2";
-			public static final String SWITCH_3 = "openflow:3";
+			public static final String SWITCH_1 = "of:0000000000000001";
+			public static final String SWITCH_2 = "of:0000000000000002";
+			public static final String SWITCH_3 = "of:0000000000000003";
 		
 		// Input Ports per Switch
 			public static final String S1_in_PORT_1 = "openflow:1:1";

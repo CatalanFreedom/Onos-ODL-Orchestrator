@@ -9,107 +9,86 @@ import com.northbound.settings.Settings;
 
 public class MakeNewFlowDPI {
 	
+//	public static void main(String[] args){
+//		try {
+//			//owInstallDPI("2", "4", "5", priority, "S1:P1:arpFlowInsert", etherType, Settings.S1_in_PORT_1, "-1", "-1", nodeToInstall);
+//			flowInstallDPI("1", "2", "4", 40000, "name", -1, "1", "10.0.0.1/32", "10.0.0.3/32", "of:0000000000000001");
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
 	public void flowInstallDPI(String actionToDo1, String actionToDo2, String actionToDo3,  int priority, String name, int etherType,
 			String inPort, String nwSrc, String nwDst, String nodeToInstall) throws JSONException{
 		
 		
 		if (Settings.RELEASE=="HELIUM_or_LITHIUM"){
 		
-			// Table in the REST API where we want to install the Flow
-			String table = Settings.SWITCH_TABLE;
 			
-			// Translation of IPs. In Helium & in Lithium the Mask is needed.
-			nwSrc = IPsrcVerifier(nwSrc);
-			nwDst = IPdstVerifier(nwDst);
+			JSONObject instructions1 = new JSONObject();
+			instructions1.put("type", "OUTPUT");
+			instructions1.put("port", actionToDo1);
 
-	
-			JSONObject outputAction1 = new JSONObject();
-			outputAction1.put("output-node-connector", actionToDo1);
-			
-			JSONObject insideAction1 = new JSONObject();
-			insideAction1.put("order", 0);
-			insideAction1.put("output-action", outputAction1);
-
-			JSONArray action = new JSONArray();
-			action.put(insideAction1);
+			JSONArray instructions = new JSONArray();
+			instructions.put(instructions1);
 			if (!actionToDo2.equals("-1")){
-				JSONObject outputAction2 = new JSONObject();
-				outputAction2.put("output-node-connector", actionToDo2);
+				JSONObject instructions2 = new JSONObject();
+				instructions2.put("type", "OUTPUT");
+				instructions2.put("port", actionToDo2);
 				
-				JSONObject insideAction2 = new JSONObject();
-				insideAction2.put("order", 1);
-				insideAction2.put("output-action", outputAction2);
-				action.put(insideAction2);
+				instructions.put(instructions2);
 				
 				if (!actionToDo3.equals("-1")){
-					JSONObject outputAction3 = new JSONObject();
-					outputAction3.put("output-node-connector", actionToDo3);
+					JSONObject instructions3 = new JSONObject();
+					instructions3.put("type", "OUTPUT");
+					instructions3.put("port", actionToDo3);
 	
-					JSONObject insideAction3 = new JSONObject();
-					insideAction3.put("order", 2);
-					insideAction3.put("output-action", outputAction3);
-					action.put(insideAction3);;
+					instructions.put(instructions3);
 				}
 			}
 			
-			JSONObject applyActions = new JSONObject();
-			applyActions.put("action", action);
+			JSONObject treatment = new JSONObject();
+			treatment.put("instructions", instructions);
 			
-			JSONObject insideInstruction = new JSONObject();
-			insideInstruction.put("order", 0);
-			insideInstruction.put("apply-actions",applyActions);
-			
-			JSONArray insideInstructionArray = new JSONArray();
-			insideInstructionArray.put(insideInstruction);
-		
-			JSONObject Instruction = new JSONObject();
-			Instruction.put("instruction",insideInstructionArray);
 			
 			JSONObject flowInside = new JSONObject();
-			flowInside.put("id", name);
-			flowInside.put("instructions", Instruction);
-			flowInside.put("table_id", table);
 			flowInside.put("priority", priority);
-			flowInside.put("flow-name", name);
+			flowInside.put("timeout", 0);
+			flowInside.put("isPermanent", true);
+			flowInside.put("deviceId", nodeToInstall);
+			flowInside.put("treatment", treatment);
+
+
+			JSONObject criteria1 = new JSONObject();
+			criteria1.put("type", "IPV4_DST");
+			criteria1.put("ip", nwDst);
 			
-			JSONObject ethernetMatch = new JSONObject();
-			// ARP Packet FLOW
-			if(etherType!=-1){		
-				JSONObject ethernetType = new JSONObject();
-				ethernetType.put("type", etherType);
-				ethernetMatch.put("ethernet-type", ethernetType);
-			}
+			JSONObject criteria2 = new JSONObject();
+			criteria2.put("type", "IPV4_SRC");
+			criteria2.put("ip", nwSrc);	
 			
-			JSONObject match = new JSONObject();
-			if(nwSrc!="-1"){
-				match.put("ipv4-destination", nwDst);
-				match.put("ipv4-source", nwSrc);
-			}else{
-				match.put("in-port", inPort);
-			}
-			if(etherType!=-1){
-				match.put("ethernet-match", ethernetMatch);
-			}
-			flowInside.put("match", match);
+			JSONObject criteria3 = new JSONObject();
+			criteria3.put("type", "ETH_TYPE");
+			criteria3.put("ethType", 2048);	
 			
-			flowInside.put("table_id", 0);
-			flowInside.put("priority", priority);
+			JSONArray criteria = new JSONArray();
+			criteria.put(criteria1);
+			criteria.put(criteria2);
+			criteria.put(criteria3);
 			
-			JSONArray flowInsideArray = new JSONArray();
-			flowInsideArray.put(flowInside);
+			JSONObject selector = new JSONObject();
+			selector.put("criteria", criteria);
 			
-			JSONObject flow = new JSONObject();
-			flow.put("flow", flowInsideArray);
+			flowInside.put("selector", selector);
 			
+//			String flowString1 = "{\"priority\":50000,\"timeout\":0,\"isPermanent\":true,\"deviceId\":\"of:0000000000000001\",\"treatment\":{\"instructions\":[{\"type\":\"OUTPUT\",\"port\":\"2\"}]},\"selector\":{\"criteria\":[{\"type\":\"IN_PORT\",\"port\":1},{\"type\":\"ETH_TYPE\",\"ethType\":\"0x800\"},{\"type\":\"IPV4_SRC\",\"ip\":\"10.0.0.1/32\"},{\"type\":\"IPV4_DST\",\"ip\":\"10.0.0.2/32\"}]}}";
 			
 			// Setting the URL where to install the flow to call it
-			String FLOW_PROGRAMMER_REST_API = Settings.FLOW_PROGRAMMER_REST_API;
-			String baseURL = Settings.URL + FLOW_PROGRAMMER_REST_API + nodeToInstall + "/table/" + table
-					+ "/flow/" + name;
-			
+			String baseURL = "http://192.168.56.101:8181/onos/v1/flows/" + nodeToInstall;
 			
 			// Actual flow install
-			RestInterfaceSender.installFlow(baseURL, flow);
+			RestInterfaceSender.installFlow(baseURL, flowInside);
 			
 		}
 // ----------------------------------------------------------------------------------------------------
@@ -173,7 +152,7 @@ public class MakeNewFlowDPI {
 	
 	// FUNCTIONS
 	
-	private String IPsrcVerifier(String nwSrc){
+	private static String IPsrcVerifier(String nwSrc){
 		if (nwSrc.equals("10.0.0.1")){
 			nwSrc = nwSrc + Settings.HOST_MASK;
 		}
@@ -190,7 +169,7 @@ public class MakeNewFlowDPI {
 	}
 	
 	
-	private String IPdstVerifier(String nwDst){
+	private static String IPdstVerifier(String nwDst){
 		if (nwDst.equals("10.0.0.1")){
 			nwDst = nwDst + Settings.HOST_MASK;
 		}

@@ -23,7 +23,7 @@ public class FlowInicializer {
 				// in Port: ("1");
 				// out Port: ("2,4,5");
 				// Actual flow install:
-				newFlowIP.flowInstallDPI("2", "4", "5", priority, "S1:P1:arpFlowInsert", etherType, Settings.S1_in_PORT_1, "-1", "-1", nodeToInstall);
+//				newFlowIP.flowInstallDPI("2", "4", "5", priority, "S1:P1:arpFlowInsert", etherType, Settings.S1_in_PORT_1, "-1", "-1", nodeToInstall);
 
 				
 				
@@ -32,7 +32,7 @@ public class FlowInicializer {
 				// in Port: ("2");
 				// out Port: ("1,4,5"));
 				// Actual flow install:
-				newFlowIP.flowInstallDPI("1", "4", "5", priority, "S1:P2:arpFlowInsert", etherType, Settings.S1_in_PORT_2, "-1", "-1", nodeToInstall);
+//				newFlowIP.flowInstallDPI("1", "4", "5", priority, "S1:P2:arpFlowInsert", etherType, Settings.S1_in_PORT_2, "-1", "-1", nodeToInstall);
 
 				
 			// Port 3 listening: Variables between flows		
@@ -40,46 +40,46 @@ public class FlowInicializer {
 				// in Port: "3");
 				// out Port: ("1,2,3"));
 				// Actual flow install:
-				newFlowIP.flowInstallDPI("1", "2", "3", priority, "S1:P3:arpFlowInsert", etherType, Settings.S1_in_PORT_3, "-1", "-1", nodeToInstall);
+//				newFlowIP.flowInstallDPI("1", "2", "3", priority, "S1:P3:arpFlowInsert", etherType, Settings.S1_in_PORT_3, "-1", "-1", nodeToInstall);
 
 				
 				
 				
 		// OF13|2 - Second Switch -----------------------------------------------------------------------------
-				nodeToInstall = Settings.SWITCH_2;
+//				nodeToInstall = Settings.SWITCH_2;
 				
 			// Port 1 listening: Variables between flows		
 				// name:   ("S2:P1:arpFlowInsert");
 				// in Port: ("1");
 				// out Port: ("2,3"));
 				// Actual flow install:
-				newFlowIP.flowInstallDPI("2", "3", "-1", priority, "S2:P1:arpFlowInsert", etherType, Settings.S2_in_PORT_1, "-1", "-1", nodeToInstall);
+//				newFlowIP.flowInstallDPI("2", "3", "-1", priority, "S2:P1:arpFlowInsert", etherType, Settings.S2_in_PORT_1, "-1", "-1", nodeToInstall);
 
 			// Port 2 listening: Variables between flows		
 				// name:   ("S2:P2:arpFlowInsert");
 				// in Port: ("2");
 				// out Port: ("1,3"));
 				// Actual flow install:
-				newFlowIP.flowInstallDPI("1", "3", "-1", priority, "S2:P2:arpFlowInsert", etherType, Settings.S2_in_PORT_2, "-1", "-1", nodeToInstall);
+//				newFlowIP.flowInstallDPI("1", "3", "-1", priority, "S2:P2:arpFlowInsert", etherType, Settings.S2_in_PORT_2, "-1", "-1", nodeToInstall);
 
 			// Port 4 listening: Variables between flows		
 				// name:   ("S2:P4:arpFlowInsert");
 				// in Port: ("4");
 				// out Port: ("1,2,3"));
 				// Actual flow install:
-				newFlowIP.flowInstallDPI("1", "2", "3", priority, "S2:P4:arpFlowInsert", etherType, Settings.S2_in_PORT_4, "-1", "-1", nodeToInstall);
+//				newFlowIP.flowInstallDPI("1", "2", "3", priority, "S2:P4:arpFlowInsert", etherType, Settings.S2_in_PORT_4, "-1", "-1", nodeToInstall);
 
 				
 				
 		// OF13|3 - Third Switch -----------------------------------------------------------------------------
-				nodeToInstall = Settings.SWITCH_3;
+//				nodeToInstall = Settings.SWITCH_3;
 				
 			// Port 1 listening: Variables between flows		
 				// name:   ("S3:P1:arpFlowInsert");
 				// in Port: ("1");
 				// out Port: ("2"));
 				// Actual flow install:
-				newFlowIP.flowInstallDPI("2", "-1", "-1", priority, "S3:P1:arpFlowInsert", etherType, Settings.S3_in_PORT_1, "-1", "-1", nodeToInstall);
+//				newFlowIP.flowInstallDPI("2", "-1", "-1", priority, "S3:P1:arpFlowInsert", etherType, Settings.S3_in_PORT_1, "-1", "-1", nodeToInstall);
 
 	
 				
@@ -88,7 +88,7 @@ public class FlowInicializer {
 	// IP   --------------------------------------------------------------------------------------------------------------------------------
 		
 		// Data in common
-				priority = 601;
+				priority = 50000;
 				etherType = 2048;
 				String inPort = "-1";
 				String IP_HOST_1 = Settings.IP_HOST_1;

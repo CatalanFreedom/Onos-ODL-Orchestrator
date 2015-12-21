@@ -38,7 +38,7 @@ public class RestInterfaceSender {
 			connection = (HttpURLConnection) url.openConnection();
 
 			// Set connection properties
-			connection.setRequestMethod("PUT");
+			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Authorization", "Basic "
 					+ encodedAuthStr);
 			connection.setRequestProperty("Content-Type", "application/json");
